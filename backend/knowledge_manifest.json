@@ -1,0 +1,130 @@
+{
+  "documents": [
+    {
+      "id": "macau-travel-guide-2026-05",
+      "file_name": "macau-travel-guide-2026-05.pdf",
+      "title": "澳门旅游指南 2026年5月",
+      "publisher": "澳门特别行政区政府旅游局",
+      "source_url": "https://content.macaotourism.gov.mo/uploads/mgto_brochures/8609eecdf925c9b7a5487f1815c8378d099dfadf.pdf",
+      "category": "综合指南",
+      "published_at": "2026-05"
+    },
+    {
+      "id": "macau-world-heritage",
+      "file_name": "macau-world-heritage.md",
+      "title": "澳门世界遗产",
+      "publisher": "澳门特别行政区政府旅游局",
+      "source_url": "https://www.macaotourism.gov.mo/zh-hans/sightseeing/macao-world-heritage",
+      "category": "世界遗产",
+      "retrieved_at": "2026-09-08"
+    },
+    {
+      "id": "macau-museums-and-galleries",
+      "file_name": "macau-museums-and-galleries.md",
+      "title": "澳门博物馆及展览厅",
+      "publisher": "澳门特别行政区政府旅游局",
+      "source_url": "https://www.macaotourism.gov.mo/zh-hans/sightseeing/museums-and-galleries",
+      "category": "博物馆",
+      "retrieved_at": "2026-09-08"
+    },
+    {
+      "id": "macau-community-walking-routes",
+      "file_name": "macau-community-walking-routes.md",
+      "title": "澳门满Fun社区步行路线",
+      "publisher": "澳门特别行政区政府旅游局",
+      "source_url": "https://www.macaotourism.gov.mo/zh-hans/macao-full-of-fun",
+      "category": "建议路线",
+      "retrieved_at": "2026-09-08"
+    },
+    {
+      "id": "macau-food-guide",
+      "file_name": "macau-food-guide.md",
+      "title": "澳门美食指南",
+      "publisher": "澳门特别行政区政府旅游局",
+      "source_url": "https://www.macaotourism.gov.mo/zh-hans/dining",
+      "category": "美食",
+      "retrieved_at": "2026-09-08"
+    },
+    {
+      "id": "macau-local-transportation",
+      "file_name": "macau-local-transportation.md",
+      "title": "澳门市内交通",
+      "publisher": "澳门特别行政区政府旅游局",
+      "source_url": "https://www.macaotourism.gov.mo/zh-hans/travelessential/before-you-travel/local-transportation",
+      "category": "交通",
+      "retrieved_at": "2026-09-08"
+    },
+    {
+      "id": "macau-ports-of-entry",
+      "file_name": "macau-ports-of-entry.md",
+      "title": "澳门入境口岸",
+      "publisher": "澳门特别行政区政府旅游局",
+      "source_url": "https://www.macaotourism.gov.mo/zh-hans/travelessential/before-you-travel/ports-of-entry",
+      "category": "口岸",
+      "retrieved_at": "2026-09-08"
+    },
+    {
+      "id": "macau-entry-requirements",
+      "file_name": "macau-entry-requirements.md",
+      "title": "澳门入境须知",
+      "publisher": "澳门特别行政区政府旅游局",
+      "source_url": "https://www.macaotourism.gov.mo/zh-hans/travelessential/before-you-travel/entry-requirements",
+      "category": "入境",
+      "retrieved_at": "2026-09-08"
+    },
+    {
+      "id": "macau-practical-info",
+      "file_name": "macau-practical-info.md",
+      "title": "澳门实用资料",
+      "publisher": "澳门特别行政区政府旅游局",
+      "source_url": "https://www.macaotourism.gov.mo/zh-hans/travelessential/before-you-travel/practical-info",
+      "category": "实用信息",
+      "retrieved_at": "2026-09-08"
+    },
+    {
+      "id": "macau-accommodation-overview",
+      "file_name": "macau-accommodation-overview.md",
+      "title": "澳门住宿官方分类",
+      "publisher": "澳门特别行政区政府旅游局",
+      "source_url": "https://www.macaotourism.gov.mo/zh-hans/accommodation",
+      "category": "住宿",
+      "retrieved_at": "2026-09-08"
+    },
+    {
+      "id": "macau-accessibility-guide",
+      "file_name": "macau-accessibility-guide.md",
+      "title": "澳门无障碍旅游指南",
+      "publisher": "澳门特别行政区政府旅游局",
+      "source_url": "https://www.macaotourism.gov.mo/zh-hans/barrier-free-access-guide",
+      "category": "无障碍",
+      "retrieved_at": "2026-09-08"
+    },
+    {
+      "id": "macau-emergency-numbers",
+      "file_name": "macau-emergency-numbers.md",
+      "title": "澳门紧急电话",
+      "publisher": "澳门特别行政区政府旅游局",
+      "source_url": "https://www.macaotourism.gov.mo/zh-hans/travelessential/useful-info/emergency-numbers",
+      "category": "安全",
+      "retrieved_at": "2026-09-08"
+    },
+    {
+      "id": "macau-typhoon-guide",
+      "file_name": "macau-typhoon-guide.md",
+      "title": "澳门风季旅游须知",
+      "publisher": "澳门特别行政区政府旅游局",
+      "source_url": "https://www.macaotourism.gov.mo/zh-hans/travelessential/useful-info/what-you-need-to-know-about-typhoon-season",
+      "category": "安全",
+      "retrieved_at": "2026-09-08"
+    },
+    {
+      "id": "macau-brief-history",
+      "file_name": "macau-brief-history.md",
+      "title": "澳门历史简介",
+      "publisher": "澳门特别行政区政府旅游局",
+      "source_url": "https://www.macaotourism.gov.mo/zh-hans/travelessential/about-macao/brief-history",
+      "category": "历史文化",
+      "retrieved_at": "2026-09-08"
+    }
+  ]
+}

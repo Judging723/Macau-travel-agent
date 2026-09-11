@@ -19,6 +19,14 @@ dist/
 
 # Runtime data
 data/
+*.ses
+!backend/data/
+backend/data/*
+!backend/data/knowledge/
+backend/data/knowledge/*
+!backend/data/knowledge/*.md
+!backend/data/knowledge/*.pdf
+backend/eval/*.txt
 logs/
 *.db
 *.sqlite3

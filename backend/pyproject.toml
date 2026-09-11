@@ -5,12 +5,33 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "travel-agent-backend"
 version = "0.1.0"
-description = "Backend API for the travel planning agent"
+description = "Backend API for the Macao travel planning agent"
 requires-python = ">=3.11,<3.13"
 dependencies = [
+    "alembic>=1.19,<2",
+    "asyncpg>=0.31,<1",
     "fastapi>=0.115,<1",
     "pydantic-settings>=2.5,<3",
+    "sqlalchemy[asyncio]>=2.0.52,<2.1",
     "uvicorn[standard]>=0.30,<1",
+    "email-validator>=2.3,<3",
+    "pwdlib[argon2]>=0.3.1,<1",
+    "pyjwt>=2.13,<3",
+    "langchain-deepseek>=1.1,<2",
+    "langchain-text-splitters>=1.1,<2",
+    "langgraph>=1.2,<2",
+    "langgraph-checkpoint-postgres>=3.1,<4",
+    "psycopg[binary,pool]>=3.2,<4",
+    "httpx>=0.28,<1",
+    "chromadb>=1.5,<2",
+    "pypdf>=6.17,<7",
+    "pymupdf>=1.26,<2",
+    "rapidocr>=3.9,<4",
+    "tavily-python>=0.8,<1",
+    "jieba>=0.42.1,<1",
+    "rank-bm25>=0.2.2,<1",
+    "opencc>=1.4,<2",
+    "sentence-transformers>=5.4,<6",
 ]
 
 [project.optional-dependencies]

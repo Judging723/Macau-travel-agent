@@ -1,0 +1,49 @@
+[
+  {
+    "id": "knowledge_macau_name_origin",
+    "message": "只根据知识库回答：澳门的葡文名称 MACAU 是怎么来的？",
+    "expected_behavior": "knowledge_answer",
+    "required_concepts": [
+      ["妈阁"],
+      ["葡萄牙人", "葡萄牙"]
+    ],
+    "forbidden_terms": ["上海", "南京"],
+    "require_url": true,
+    "require_page": true
+  },
+  {
+    "id": "knowledge_historic_centre",
+    "message": "只根据知识库推荐澳门历史城区有代表性的文化地点。",
+    "expected_behavior": "knowledge_answer",
+    "required_concepts": [
+      ["澳门历史城区"],
+      ["大三巴", "妈阁庙", "议事亭前地"]
+    ],
+    "forbidden_terms": ["上海", "南京"],
+    "require_url": true,
+    "require_page": true
+  },
+  {
+    "id": "realtime_museum_hours",
+    "message": "请查询澳门博物馆今天的开放时间和是否需要购票。",
+    "expected_behavior": "realtime_answer",
+    "required_concepts": [
+      ["开放", "闭馆"],
+      ["门票", "票价", "免费"]
+    ],
+    "forbidden_terms": [],
+    "require_url": true,
+    "require_page": false
+  },
+  {
+    "id": "reject_other_city",
+    "message": "请帮我规划上海三日游。",
+    "expected_behavior": "scope_refusal",
+    "required_concepts": [
+      ["只支持澳门", "仅支持澳门", "服务范围仅限澳门"]
+    ],
+    "forbidden_terms": [],
+    "require_url": false,
+    "require_page": false
+  }
+]

@@ -1,0 +1,70 @@
+[
+  {
+    "id": "one_day_culture",
+    "trip": {
+      "title": "澳门文化一日游",
+      "start_date": "2026-10-01",
+      "end_date": "2026-10-01",
+      "budget": 1000,
+      "num_people": 1,
+      "preferences": {
+        "interests": ["历史文化", "博物馆"]
+      }
+    },
+    "additional_requirements": "优先安排历史文化地点和博物馆，行程不要太紧凑。",
+    "expected": {
+      "max_activities_per_day": 4,
+      "required_item_types": ["activity", "food"],
+      "required_concepts": [
+        ["澳门博物馆", "大三巴", "妈阁庙", "澳门历史城区"]
+      ],
+      "forbidden_terms": ["上海", "南京", "杭州", "北京"]
+    }
+  },
+  {
+    "id": "two_day_food_and_heritage",
+    "trip": {
+      "title": "澳门美食与世遗两日游",
+      "start_date": "2026-10-02",
+      "end_date": "2026-10-03",
+      "budget": 3000,
+      "num_people": 2,
+      "preferences": {
+        "interests": ["世界遗产", "澳门美食"]
+      }
+    },
+    "additional_requirements": "每天安排一段休息时间，兼顾世界遗产和澳门本地美食。",
+    "expected": {
+      "max_activities_per_day": 4,
+      "required_item_types": ["activity", "food"],
+      "required_concepts": [
+        ["大三巴", "妈阁庙", "议事亭前地", "澳门历史城区"],
+        ["美食", "葡国菜", "土生葡菜", "葡挞"]
+      ],
+      "forbidden_terms": ["上海", "南京", "杭州", "北京"]
+    }
+  },
+  {
+    "id": "three_day_relaxed_trip",
+    "trip": {
+      "title": "澳门舒缓三日游",
+      "start_date": "2026-10-04",
+      "end_date": "2026-10-06",
+      "budget": 5000,
+      "num_people": 2,
+      "preferences": {
+        "interests": ["文化", "城市漫步"]
+      }
+    },
+    "additional_requirements": "同行人中有长辈，每天不要安排太满，减少长距离步行。",
+    "expected": {
+      "max_activities_per_day": 3,
+      "required_item_types": ["activity", "food", "transport"],
+      "required_concepts": [
+        ["休息", "轻松", "舒缓", "长辈"],
+        ["巴士", "出租车", "交通"]
+      ],
+      "forbidden_terms": ["上海", "南京", "杭州", "北京"]
+    }
+  }
+]
