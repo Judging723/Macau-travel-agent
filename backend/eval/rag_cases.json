@@ -2,6 +2,10 @@
   {
     "id": "pdf_ocr_mount_fortress",
     "query": "澳门旅游指南里大炮台又叫什么，始建于哪一年？",
+    "query_variants": [
+      "大炮台的别名是什么，它从哪一年开始兴建？",
+      "圣保禄炮台就是大炮台吗，开建年份是什么？"
+    ],
     "expected_source": "澳门旅游指南 2026年5月",
     "relevant_passages": [
       {"page_number": 9, "keywords": ["大炮台", "圣保禄炮台", "1617年"]}
@@ -10,6 +14,10 @@
   {
     "id": "macao_name_origin",
     "query": "澳门的葡文名称 MACAU 是怎么来的？",
+    "query_variants": [
+      "MACAU 这个名字与妈阁有什么关系？",
+      "葡萄牙人为什么把澳门称作 MACAU？"
+    ],
     "expected_source": "澳门历史简介",
     "relevant_passages": [
       {"page_number": 1, "keywords": ["妈阁", "MACAU", "葡萄牙人"]}
@@ -18,6 +26,10 @@
   {
     "id": "oldest_temple",
     "query": "澳门现存有实物可考的最古老庙宇是哪一座？",
+    "query_variants": [
+      "有文物实证的澳门最古老庙宇叫什么？",
+      "澳门哪座庙宇被称为现存最古老且有实物可考？"
+    ],
     "expected_source": "澳门世界遗产",
     "relevant_passages": [
       {"page_number": 1, "keywords": ["妈阁庙", "最古老的庙宇"]}
@@ -26,6 +38,10 @@
   {
     "id": "st_paul_college_history",
     "query": "大三巴所属的圣保禄学院何时成立，有什么历史地位？",
+    "query_variants": [
+      "圣保禄学院的创办年份和历史地位是什么？",
+      "远东第一所西式大学是澳门哪所学院，哪年建立？"
+    ],
     "expected_source": "澳门世界遗产",
     "relevant_passages": [
       {"page_number": 1, "keywords": ["1594", "远东地区第一所西式大学"]},
@@ -35,6 +51,10 @@
   {
     "id": "mount_fortress_history",
     "query": "大炮台是哪几年修建的，占地约多少？",
+    "query_variants": [
+      "大炮台的建造年代和占地面积分别是多少？",
+      "圣保禄炮台从何时修建，占地大约一万平方米吗？"
+    ],
     "expected_source": "澳门世界遗产",
     "relevant_passages": [
       {"page_number": 1, "keywords": ["1617年", "1626年", "一万平方米"]}
@@ -43,6 +63,10 @@
   {
     "id": "guia_lighthouse_first",
     "query": "中国海岸第一座现代灯塔是哪一座，建于何时？",
+    "query_variants": [
+      "澳门哪座灯塔是中国海岸首座现代灯塔？",
+      "东望洋灯塔是哪年建成的，有什么第一的地位？"
+    ],
     "expected_source": "澳门世界遗产",
     "relevant_passages": [
       {"page_number": 1, "keywords": ["东望洋灯塔", "1864", "中国海岸第一座现代灯塔"]},
@@ -52,6 +76,10 @@
   {
     "id": "macao_museum_location",
     "query": "澳门博物馆坐落在哪处历史遗迹上？",
+    "query_variants": [
+      "澳门博物馆建在澳门哪座炮台上？",
+      "参观大炮台时能顺便到哪个澳门历史博物馆？"
+    ],
     "expected_source": "澳门博物馆及展览厅",
     "relevant_passages": [
       {"page_number": 1, "keywords": ["澳门博物馆", "大炮台之上"]}
@@ -60,6 +88,10 @@
   {
     "id": "maritime_museum_theme",
     "query": "澳门哪个博物馆介绍中国和葡萄牙的海事历史？",
+    "query_variants": [
+      "想了解中葡航海历史应该去澳门哪家博物馆？",
+      "澳门海事博物馆主要呈现哪两个国家的海事联系？"
+    ],
     "expected_source": "澳门博物馆及展览厅",
     "relevant_passages": [
       {"page_number": 1, "keywords": ["海事博物馆", "中国和葡萄牙", "海事"]}
@@ -68,6 +100,10 @@
   {
     "id": "grand_prix_museum_size",
     "query": "澳门大赛车博物馆有几层，建筑面积约多少？",
+    "query_variants": [
+      "大赛车博物馆的楼层数和面积是多少？",
+      "澳门格兰披治大赛车博物馆规模多大、共有多少层？"
+    ],
     "expected_source": "澳门博物馆及展览厅",
     "relevant_passages": [
       {"page_number": 1, "keywords": ["楼高四层", "16,000平方米"]}
@@ -76,6 +112,12 @@
   {
     "id": "nazha_museum_heritage",
     "query": "澳门哪咤信俗何时列入国家级非物质文化遗产名录？",
+    "query_variants": [
+      "哪咤信俗被列入国家级非遗是哪一年？",
+      "澳门哪吒信俗进入国家级非物质文化遗产名录的时间是什么？",
+      "我问的是哪咤信俗列入国家级非遗的年份，不是哪咤庙建成年代。"
+    ],
+    "category": "hard",
     "expected_source": "澳门博物馆及展览厅",
     "relevant_passages": [
       {"page_number": 1, "keywords": ["哪咤信俗", "2014年", "国家级非物质文化遗产"]}
@@ -84,6 +126,10 @@
   {
     "id": "central_heritage_route",
     "query": "想体验中葡文化交融和内港旧社区，适合哪条官方步行路线？",
+    "query_variants": [
+      "哪条澳门步行路线同时经过中葡文化遗产和内港社区？",
+      "想逛澳门中区和内港老街，应选择哪条官方论区行赏路线？"
+    ],
     "expected_source": "澳门满Fun社区步行路线",
     "relevant_passages": [
       {"page_number": 1, "keywords": ["中区世遗游", "中葡文化交融", "内港"]}
@@ -92,6 +138,10 @@
   {
     "id": "st_lazarus_art_route",
     "query": "澳门望德堂文艺游建议用时多久，如何登东望洋山？",
+    "query_variants": [
+      "望德堂文艺路线要走多久，上东望洋山可乘什么设施？",
+      "澳门文艺路线中包含东望洋山的是哪条，建议时长多少？"
+    ],
     "expected_source": "澳门满Fun社区步行路线",
     "relevant_passages": [
       {"page_number": 1, "keywords": ["望德堂文艺游", "90 分钟", "缆车"]}
@@ -100,6 +150,10 @@
   {
     "id": "taipa_route",
     "query": "想游氹仔旧城、龙环葡韵和地道美食，应选哪条路线？",
+    "query_variants": [
+      "哪条澳门官方路线会经过氹仔旧城区和龙环葡韵？",
+      "我想边逛氹仔老街边吃本地美食，推荐哪条步行路线？"
+    ],
     "expected_source": "澳门满Fun社区步行路线",
     "relevant_passages": [
       {"page_number": 1, "keywords": ["氹仔葡韵游", "90 分钟", "游走氹仔旧城小巷"]}
@@ -108,6 +162,10 @@
   {
     "id": "coloane_route_duration",
     "query": "路环悠闲游官方建议用时多久，有什么路线特色？",
+    "query_variants": [
+      "官方的路环路线要走多长时间，主要看什么？",
+      "想慢慢游览路环渔村和自然风光，路线建议时长是多少？"
+    ],
     "expected_source": "澳门满Fun社区步行路线",
     "relevant_passages": [
       {"page_number": 1, "keywords": ["路环悠闲游", "50 分钟", "渔村情怀"]}
@@ -116,6 +174,10 @@
   {
     "id": "macanese_cuisine_fusion",
     "query": "澳门土生菜融合了哪些地区的食材和烹饪文化？",
+    "query_variants": [
+      "土生葡人菜受到哪些国家或地区饮食文化影响？",
+      "为什么说澳门土生菜是多种烹饪文化融合的结果？"
+    ],
     "expected_source": "澳门美食指南",
     "relevant_passages": [
       {"page_number": 1, "keywords": ["葡萄牙菜及中国菜", "欧洲", "东南亚"]}
@@ -124,6 +186,10 @@
   {
     "id": "african_chicken",
     "query": "澳门非洲鸡通常用哪些香料和酱汁制作？",
+    "query_variants": [
+      "澳门名菜非洲鸡的主要调味料有哪些？",
+      "非洲鸡会用椰汁、花生和辣椒等材料吗？"
+    ],
     "expected_source": "澳门美食指南",
     "relevant_passages": [
       {"page_number": 1, "keywords": ["非洲鸡", "辣椒", "胡椒"]}
@@ -132,6 +198,10 @@
   {
     "id": "serradura_dessert",
     "query": "澳门木糠布甸是怎样做成的？",
+    "query_variants": [
+      "木糠布甸的主要材料和制作方式是什么？",
+      "澳门甜品木糠布甸为什么有一层层饼干碎？"
+    ],
     "expected_source": "澳门美食指南",
     "relevant_passages": [
       {"page_number": 1, "keywords": ["木糠布甸", "鲜奶油", "饼干碎"]}
@@ -140,6 +210,10 @@
   {
     "id": "local_pork_chop_bun",
     "query": "澳门猪扒包和普通汉堡有什么区别？",
+    "query_variants": [
+      "澳门猪扒包的面包和肉馅有什么特点？",
+      "猪扒包为什么不是普通的汉堡包？"
+    ],
     "expected_source": "澳门美食指南",
     "relevant_passages": [
       {"page_number": 1, "keywords": ["猪扒包", "没有放蔬菜和调味料", "烤猪扒"]}
@@ -148,6 +222,10 @@
   {
     "id": "bus_fare",
     "query": "澳门公共巴士车费多少，车上可以找零钱吗？",
+    "query_variants": [
+      "在澳门坐一次公交多少钱，投币会找零吗？",
+      "澳门巴士统一票价是多少，需要自备零钱吗？"
+    ],
     "expected_source": "澳门市内交通",
     "relevant_passages": [
       {"page_number": 1, "keywords": ["澳门币6元", "不设零钱找换"]}
@@ -156,6 +234,10 @@
   {
     "id": "light_rail_lines",
     "query": "澳门轻轨已经介绍了哪些线路，哪条仍在建设？",
+    "query_variants": [
+      "澳门轻轨有哪些运营线路，还有什么线路尚未建成？",
+      "请区分澳门轻轨已开通路线和仍在建设的路线。"
+    ],
     "expected_source": "澳门市内交通",
     "relevant_passages": [
       {"page_number": 1, "keywords": ["氹仔线", "石排湾线", "横琴线", "东线(建设中)"]}
@@ -164,6 +246,10 @@
   {
     "id": "taxi_starting_fare",
     "query": "澳门普通的士首1600米收费多少？",
+    "query_variants": [
+      "澳门出租车起步价是多少，包含多少米？",
+      "普通的士在澳门行驶最初 1.6 公里要付多少钱？"
+    ],
     "expected_source": "澳门市内交通",
     "relevant_passages": [
       {"page_number": 1, "keywords": ["首1600米", "澳门币21元"]}
@@ -172,6 +258,12 @@
   {
     "id": "cash_declaration",
     "query": "入境澳门携带多少现金或无记名票据需要申报？",
+    "query_variants": [
+      "携带现金进入澳门，达到什么金额必须向海关申报？",
+      "澳门入境现金申报门槛是多少？",
+      "我问的是入境现金申报标准，不是口岸签证费用。"
+    ],
+    "category": "hard",
     "expected_source": "澳门入境须知",
     "relevant_passages": [
       {"page_number": 1, "keywords": ["澳门币十二万元或以上", "红色通道"]}
@@ -180,6 +272,10 @@
   {
     "id": "port_visa_individual_fee",
     "query": "澳门口岸签证个人一次性和多次性分别收费多少？",
+    "query_variants": [
+      "个人办理澳门口岸签证，单次和多次签证各多少钱？",
+      "澳门落地签个人一次入境与多次入境的费用有何不同？"
+    ],
     "expected_source": "澳门入境须知",
     "relevant_passages": [
       {"page_number": 1, "keywords": ["个人", "200元", "300元"]}
@@ -188,6 +284,10 @@
   {
     "id": "airport_open_hours",
     "query": "澳门国际机场口岸是否24小时通关，地址在哪里？",
+    "query_variants": [
+      "澳门机场口岸全天开放吗，具体位于哪里？",
+      "深夜能从澳门国际机场办理出入境吗？请给出地址。"
+    ],
     "expected_source": "澳门入境口岸",
     "relevant_passages": [
       {"page_number": 1, "keywords": ["澳门国际机场", "氹仔伟龙马路", "24小时"]}
@@ -196,6 +296,12 @@
   {
     "id": "bridge_port_halls",
     "query": "港珠澳大桥澳门口岸的珠澳和港澳旅检大厅通关时间分别是什么？",
+    "query_variants": [
+      "大桥澳门口岸两个旅检大厅各自几点开放？",
+      "请分别说明珠澳旅检大厅与港澳旅检大厅的通关时段。",
+      "港珠澳大桥澳门口岸不是所有大厅都同一时间开放吗？"
+    ],
+    "category": "hard",
     "expected_source": "澳门入境口岸",
     "relevant_passages": [
       {"page_number": 1, "keywords": ["珠澳旅检大厅", "上午8时至晚上10时", "港澳旅检大厅：24小时"]}
@@ -204,6 +310,10 @@
   {
     "id": "macao_currency",
     "query": "澳门的官方货币是什么，有哪些纸币面额？",
+    "query_variants": [
+      "澳门使用什么法定货币，常见钞票有哪些面值？",
+      "去澳门消费要换哪种货币，它发行哪些纸币面额？"
+    ],
     "expected_source": "澳门实用资料",
     "relevant_passages": [
       {"page_number": 1, "keywords": ["澳门元", "10元", "1000元"]}
@@ -212,6 +322,10 @@
   {
     "id": "free_wifi",
     "query": "澳门官方免费 Wi-Fi 的统一网络名称是什么？",
+    "query_variants": [
+      "澳门政府公共无线网络的 SSID 叫什么？",
+      "游客在澳门连接哪个统一名称的免费 Wi-Fi？"
+    ],
     "expected_source": "澳门实用资料",
     "relevant_passages": [
       {"page_number": 1, "keywords": ["FreeWiFi.MO", "免费"]}
@@ -220,6 +334,10 @@
   {
     "id": "best_travel_season",
     "query": "澳门哪个季节气候温和、湿度低，适合旅游？",
+    "query_variants": [
+      "什么时候去澳门天气较舒适而且没那么潮湿？",
+      "澳门最适合旅游的季节是什么，气候特点如何？"
+    ],
     "expected_source": "澳门实用资料",
     "relevant_passages": [
       {"page_number": 1, "keywords": ["十月至十一月", "湿度低", "理想的旅游季节"]},
@@ -229,6 +347,10 @@
   {
     "id": "typhoon_season",
     "query": "澳门台风季是几月至几月，哪几个月最常受台风影响？",
+    "query_variants": [
+      "澳门每年什么月份属于台风季，高峰期在何时？",
+      "计划夏秋去澳门，哪些月份台风影响最频繁？"
+    ],
     "expected_source": "澳门风季旅游须知",
     "relevant_passages": [
       {"page_number": 1, "keywords": ["5月至11月", "7月至9月"]}
@@ -237,6 +359,10 @@
   {
     "id": "signal_eight_safety",
     "query": "澳门悬挂八号风球时游客应采取哪些安全措施？",
+    "query_variants": [
+      "澳门发布八号台风信号后，游客应该怎么办？",
+      "八号风球生效时是否应停止户外活动并留在室内？"
+    ],
     "expected_source": "澳门风季旅游须知",
     "relevant_passages": [
       {"page_number": 1, "keywords": ["停止一切户外及海上活动", "安全的室内场所", "跨海大桥"]}
@@ -245,6 +371,10 @@
   {
     "id": "emergency_numbers",
     "query": "在澳门遇到紧急情况可以拨打哪些求助热线？",
+    "query_variants": [
+      "澳门报警、火警或急救应该拨什么电话？",
+      "游客在澳门发生意外时有哪些紧急联系电话？"
+    ],
     "expected_source": "澳门紧急电话",
     "relevant_passages": [
       {"page_number": 1, "keywords": ["999", "110", "112"]}
@@ -253,6 +383,10 @@
   {
     "id": "accessibility_survey",
     "query": "澳门无障碍旅游设施调查由旅游局委托哪家机构开展？",
+    "query_variants": [
+      "哪一个机构受澳门旅游局委托研究无障碍旅游设施？",
+      "澳门旅游局的无障碍设施调查是谁负责执行的？"
+    ],
     "expected_source": "澳门无障碍旅游指南",
     "relevant_passages": [
       {"page_number": 1, "keywords": ["澳门明爱", "无障碍旅游设施调查"]}
@@ -261,6 +395,10 @@
   {
     "id": "accommodation_categories",
     "query": "澳门旅游局住宿目录可以按哪些地区筛选？",
+    "query_variants": [
+      "官方澳门住宿列表提供哪些区域分类？",
+      "在旅游局目录查酒店时，可以按澳门哪些地区过滤？"
+    ],
     "expected_source": "澳门住宿官方分类",
     "relevant_passages": [
       {"page_number": 1, "keywords": ["澳门", "氹仔", "路环"]}

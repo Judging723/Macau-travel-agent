@@ -32,6 +32,7 @@ class Settings(BaseSettings):
     deepseek_api_key: str = ""
     deepseek_model: str = "deepseek-v4-flash"
     embedding_model: str = "qwen3-embedding:4b"
+    reranker_device: Literal["auto", "cpu", "mps"] = "auto"
     tavily_api_key: str = ""
 
     chroma_host: str = "127.0.0.1"
@@ -39,6 +40,8 @@ class Settings(BaseSettings):
     chroma_collection: str = "macau_travel_knowledge"
 
     rag_top_k: int = 5
+    rag_hybrid_candidate_k: int = 20
+    rag_rerank_candidate_k: int = 20
     rag_score_threshold: float = 0.2
 
 

@@ -194,15 +194,45 @@ def test_get_reranker_uses_bge_model(
     get_reranker.cache_clear()
 
 
+def test_get_reranker_respects_configured_device(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    arguments: dict = {}
+
+    class FakeSettings:
+        reranker_device = "cpu"
+
+    monkeypatch.setattr(
+        "app.rag.reranker.get_settings",
+        lambda: FakeSettings(),
+    )
+    monkeypatch.setattr(
+        "app.rag.reranker.CrossEncoder",
+        lambda **kwargs: arguments.update(kwargs) or object(),
+    )
+    monkeypatch.setattr(
+        "app.rag.reranker.torch.backends.mps.is_available",
+        lambda: True,
+    )
+
+    get_reranker.cache_clear()
+    get_reranker()
+
+    assert arguments["device"] == "cpu"
+    get_reranker.cache_clear()
+
+
 def test_search_reranked_knowledge_uses_hybrid_candidates(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     async def fake_hybrid_search(
         query: str,
         top_k: int,
+        candidate_top_k: int,
     ) -> list[dict]:
         assert query == "澳门土生葡人美食"
         assert top_k == 20
+        assert candidate_top_k == 20
 
         return [
             {"content": "候选一"},
@@ -217,7 +247,7 @@ def test_search_reranked_knowledge_uses_hybrid_candidates(
     ) -> list[dict]:
         assert query == "澳门土生葡人美食"
         assert top_k == 2
-        return documents[:top_k]
+        return [{**document, "score": 0.9} for document in documents[:top_k]]
 
     monkeypatch.setattr(
         "app.rag.rag_service.search_hybrid_knowledge",
@@ -236,3 +266,41 @@ def test_search_reranked_knowledge_uses_hybrid_candidates(
     )
 
     assert len(results) == 2
+
+
+def test_search_reranked_knowledge_accepts_candidate_override(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    received_top_k: list[int] = []
+
+    async def fake_hybrid_search(
+        query: str,
+        top_k: int,
+        candidate_top_k: int,
+    ) -> list[dict]:
+        assert query == "澳门历史城区"
+        assert candidate_top_k == 20
+        received_top_k.append(top_k)
+        return [{"content": f"候选{index}"} for index in range(top_k)]
+
+    monkeypatch.setattr(
+        "app.rag.rag_service.search_hybrid_knowledge",
+        fake_hybrid_search,
+    )
+    monkeypatch.setattr(
+        "app.rag.rag_service.rerank_documents",
+        lambda _query, documents, top_k: [
+            {**document, "score": 0.9} for document in documents[:top_k]
+        ],
+    )
+
+    results = asyncio.run(
+        search_reranked_knowledge(
+            "澳门历史城区",
+            top_k=3,
+            candidate_top_k=10,
+        )
+    )
+
+    assert received_top_k == [10]
+    assert len(results) == 3

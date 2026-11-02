@@ -4,13 +4,19 @@ from typing import Any
 import torch
 from sentence_transformers import CrossEncoder
 
+from app.config import get_settings
+
 RERANKER_MODEL = "BAAI/bge-reranker-v2-m3"
 
 
 @lru_cache(maxsize=1)
 def get_reranker() -> CrossEncoder:
     """加载并缓存重排模型。"""
-    device = "mps" if torch.backends.mps.is_available() else "cpu"
+    configured_device = get_settings().reranker_device
+    device = configured_device
+
+    if configured_device == "auto":
+        device = "mps" if torch.backends.mps.is_available() else "cpu"
 
     return CrossEncoder(
         model_name_or_path=RERANKER_MODEL,

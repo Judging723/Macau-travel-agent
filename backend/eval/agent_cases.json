@@ -45,5 +45,62 @@
     "forbidden_terms": [],
     "require_url": false,
     "require_page": false
+  },
+  {
+    "id": "hard_nazha_heritage_year",
+    "message": "只根据知识库回答：哪咤信俗是哪一年列入国家级非物质文化遗产名录的？不要回答哪咤庙的建造年代。",
+    "expected_behavior": "hard_knowledge_answer",
+    "required_concepts": [
+      ["2014年", "2014"]
+    ],
+    "forbidden_terms": ["1888年"],
+    "require_url": true,
+    "require_page": true
+  },
+  {
+    "id": "hard_cash_declaration",
+    "message": "只根据知识库回答：入境澳门时，现金或无记名可转让票据达到多少金额必须申报？不要回答签证费用。",
+    "expected_behavior": "hard_knowledge_answer",
+    "required_concepts": [
+      ["十二万元", "120000"],
+      ["红色通道", "申报"]
+    ],
+    "forbidden_terms": ["一次性签证", "多次性签证"],
+    "require_url": true,
+    "require_page": true
+  },
+  {
+    "id": "hard_bridge_hall_hours",
+    "message": "只根据知识库分别回答港珠澳大桥澳门口岸珠澳旅检大厅和港澳旅检大厅的通关时间。",
+    "expected_behavior": "hard_knowledge_answer",
+    "required_concepts": [
+      ["上午8时至晚上10时", "8时至22时", "08:00至22:00"],
+      ["24小时", "全天"]
+    ],
+    "forbidden_terms": [],
+    "require_url": true,
+    "require_page": true
+  },
+  {
+    "id": "no_evidence_future_hotel_inventory",
+    "message": "只根据知识库回答：2028年1月1日澳门某酒店还剩多少间客房？",
+    "expected_behavior": "no_evidence_refusal",
+    "required_concepts": [
+      ["没有足够资料", "无法确认", "知识库没有", "知识库中没有"]
+    ],
+    "forbidden_terms": [],
+    "require_url": false,
+    "require_page": false
+  },
+  {
+    "id": "no_evidence_invented_museum",
+    "message": "只根据知识库回答：澳门量子科技博物馆的火星展厅门票多少钱？",
+    "expected_behavior": "no_evidence_refusal",
+    "required_concepts": [
+      ["没有足够资料", "无法确认", "知识库没有"]
+    ],
+    "forbidden_terms": [],
+    "require_url": false,
+    "require_page": false
   }
 ]

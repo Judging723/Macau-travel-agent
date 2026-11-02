@@ -64,6 +64,13 @@ async def main() -> None:
         raise RuntimeError("TRAVEL_AGENT_EVAL_TOKEN is not configured")
 
     cases = json.loads(CASES_PATH.read_text(encoding="utf-8"))
+    selected_case_id = os.getenv("TRAVEL_AGENT_EVAL_CASE_ID")
+
+    if selected_case_id:
+        cases = [case for case in cases if case["id"] == selected_case_id]
+
+        if not cases:
+            raise RuntimeError(f"Unknown agent evaluation case: {selected_case_id}")
 
     passed_count = 0
     concept_passed = 0
@@ -72,6 +79,8 @@ async def main() -> None:
     page_passed = 0
     page_required = 0
     total_latency_ms = 0.0
+    behavior_totals: dict[str, int] = {}
+    behavior_passed: dict[str, int] = {}
 
     headers = {
         "Authorization": f"Bearer {token}",
@@ -83,6 +92,8 @@ async def main() -> None:
         timeout=180,
     ) as client:
         for case in cases:
+            behavior = case["expected_behavior"]
+            behavior_totals[behavior] = behavior_totals.get(behavior, 0) + 1
             start = perf_counter()
 
             try:
@@ -108,6 +119,7 @@ async def main() -> None:
             passed = all(checks.values())
 
             passed_count += int(passed)
+            behavior_passed[behavior] = behavior_passed.get(behavior, 0) + int(passed)
             concept_passed += int(checks["concepts"])
 
             if case["require_url"]:
@@ -137,6 +149,10 @@ async def main() -> None:
     print(f"用例数量：{case_count}")
     print(f"整体通过率：{passed_count / case_count:.2%}")
     print(f"概念命中率：{concept_passed / case_count:.2%}")
+
+    for behavior, total in behavior_totals.items():
+        passed = behavior_passed.get(behavior, 0)
+        print(f"{behavior}通过率：{passed / total:.2%} ({passed}/{total})")
 
     if source_required:
         print(f"来源标注率：{source_passed / source_required:.2%}")

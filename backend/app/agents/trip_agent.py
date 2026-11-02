@@ -1,4 +1,5 @@
 import logging
+import re
 from dataclasses import dataclass
 
 from langchain_core.messages import HumanMessage, SystemMessage
@@ -16,6 +17,25 @@ RELAXED_TRIP_TERMS = (
     "不要太满",
 )
 MAX_PLAN_REVISIONS = 3
+OUTSIDE_MACAU_DESTINATIONS = (
+    "上海",
+    "南京",
+    "杭州",
+    "北京",
+    "广州",
+    "深圳",
+    "珠海",
+    "香港",
+)
+TIME_RANGE_PATTERN = re.compile(
+    r"^\s*(\d{1,2}):(\d{2})\s*[-–—至]\s*(\d{1,2}):(\d{2})\s*$"
+)
+
+
+@dataclass(frozen=True)
+class PlanConstraints:
+    budget: int | None = None
+    expected_day_count: int | None = None
 
 
 @dataclass(frozen=True)
@@ -51,6 +71,129 @@ def find_activity_limit_issues(
             )
 
     return issues
+
+
+def find_budget_issues(
+    plan: GeneratedItinerary,
+    budget: int | None,
+) -> list[str]:
+    if budget is None:
+        return []
+
+    total_cost = sum(item.cost for day in plan.days for item in day.items)
+
+    if total_cost <= budget:
+        return []
+
+    return [f"预计总费用{total_cost}元超过总预算{budget}元，请降低费用。"]
+
+
+def find_day_count_issues(
+    plan: GeneratedItinerary,
+    expected_day_count: int | None,
+) -> list[str]:
+    if expected_day_count is None or len(plan.days) == expected_day_count:
+        return []
+
+    return [
+        f"计划包含{len(plan.days)}天，但用户行程需要{expected_day_count}天，"
+        "请补齐或删减行程天数。"
+    ]
+
+
+def parse_time_range(value: str) -> tuple[int, int] | None:
+    match = TIME_RANGE_PATTERN.fullmatch(value)
+
+    if match is None:
+        return None
+
+    start_hour, start_minute, end_hour, end_minute = map(int, match.groups())
+
+    if start_hour > 23 or end_hour > 23 or start_minute > 59 or end_minute > 59:
+        return None
+
+    return start_hour * 60 + start_minute, end_hour * 60 + end_minute
+
+
+def find_time_conflict_issues(plan: GeneratedItinerary) -> list[str]:
+    issues: list[str] = []
+
+    for day in plan.days:
+        scheduled_items: list[tuple[int, int, str]] = []
+
+        for item in day.items:
+            time_range = parse_time_range(item.time)
+
+            if time_range is None:
+                continue
+
+            start, end = time_range
+
+            if end <= start:
+                issues.append(f"第{day.day_number}天时间段{item.time}的结束时间不晚于开始时间。")
+                continue
+
+            scheduled_items.append((start, end, item.time))
+
+        scheduled_items.sort()
+
+        for previous, current in zip(scheduled_items, scheduled_items[1:], strict=False):
+            if current[0] < previous[1]:
+                issues.append(
+                    f"第{day.day_number}天时间段{previous[2]}与{current[2]}发生重叠。"
+                )
+
+    return issues
+
+
+def find_destination_issues(plan: GeneratedItinerary) -> list[str]:
+    issues: list[str] = []
+
+    for day in plan.days:
+        for item in day.items:
+            if item.type not in {"activity", "hotel"}:
+                continue
+
+            outside_places = [
+                place for place in OUTSIDE_MACAU_DESTINATIONS if place in item.description
+            ]
+
+            if outside_places:
+                issues.append(
+                    f"第{day.day_number}天安排包含澳门范围外地点："
+                    f"{'、'.join(outside_places)}。"
+                )
+
+    return issues
+
+
+def find_rule_issues(
+    plan: GeneratedItinerary,
+    query: str,
+    constraints: PlanConstraints,
+) -> list[str]:
+    return [
+        *find_activity_limit_issues(plan, get_activity_limit(query)),
+        *find_budget_issues(plan, constraints.budget),
+        *find_day_count_issues(plan, constraints.expected_day_count),
+        *find_time_conflict_issues(plan),
+        *find_destination_issues(plan),
+    ]
+
+
+def merge_rule_issues(
+    reflection: PlanReflection,
+    rule_issues: list[str],
+) -> PlanReflection:
+    if not rule_issues:
+        return reflection
+
+    return reflection.model_copy(
+        update={
+            "score": min(reflection.score, 7),
+            "issues": [*reflection.issues, *rule_issues],
+        }
+    )
 
 
 def build_activity_limit_instruction(query: str) -> str:
@@ -116,26 +259,19 @@ class TripAgent:
             "必须列入issues，并将评分设为8分以下。"
         )
 
-    async def plan(self, query: str, knowledge: str = "") -> ReflectedPlan:
+    async def plan(
+        self,
+        query: str,
+        knowledge: str = "",
+        constraints: PlanConstraints | None = None,
+    ) -> ReflectedPlan:
+        plan_constraints = constraints or PlanConstraints()
         draft = await self._write_plan(query, knowledge)
         reflection = await self._reflect(query, knowledge, draft)
-
-        activity_limit = get_activity_limit(query)
-        rule_issues = find_activity_limit_issues(
-            draft,
-            activity_limit,
+        reflection = merge_rule_issues(
+            reflection,
+            find_rule_issues(draft, query, plan_constraints),
         )
-
-        if rule_issues:
-            reflection = reflection.model_copy(
-                update={
-                    "score": min(reflection.score, 7),
-                    "issues": [
-                        *reflection.issues,
-                        *rule_issues,
-                    ],
-                }
-            )
 
         if reflection.score >= 8:
             return ReflectedPlan(
@@ -153,26 +289,22 @@ class TripAgent:
                 current_plan,
                 reflection,
             )
-            remaining_issues = find_activity_limit_issues(
+            reflection = await self._reflect(
+                query,
+                knowledge,
                 current_plan,
-                activity_limit,
             )
+            remaining_issues = find_rule_issues(current_plan, query, plan_constraints)
+            reflection = merge_rule_issues(reflection, remaining_issues)
 
-            if not remaining_issues:
+            if reflection.score >= 8:
                 return ReflectedPlan(
                     plan=current_plan,
                     reflection=reflection,
                     revised=True,
                 )
 
-            reflection = reflection.model_copy(
-                update={
-                    "score": 7,
-                    "issues": remaining_issues,
-                }
-            )
-
-        raise RuntimeError("DeepSeek revised itinerary exceeds activity limit")
+        raise RuntimeError("DeepSeek revised itinerary did not pass reflection checks")
 
     async def _write_plan(
         self,

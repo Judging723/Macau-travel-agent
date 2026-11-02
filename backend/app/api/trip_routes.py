@@ -7,6 +7,7 @@ from fastapi import APIRouter, HTTPException, status
 from sqlalchemy import select
 
 from app.agents.orchestrator import get_travel_orchestrator
+from app.agents.trip_agent import PlanConstraints
 from app.api.auth_routes import CurrentUser, DatabaseSession
 from app.config import TARGET_CITY, TARGET_COUNTRY
 from app.models import Trip
@@ -153,6 +154,14 @@ async def generate_trip_plan(
         result = await orchestrator.trip_agent.plan(
             query=query,
             knowledge=knowledge,
+            constraints=PlanConstraints(
+                budget=trip.budget,
+                expected_day_count=(
+                    (trip.end_date - trip.start_date).days + 1
+                    if trip.start_date is not None and trip.end_date is not None
+                    else None
+                ),
+            ),
         )
         plan = result.plan
 

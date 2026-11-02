@@ -4,7 +4,15 @@ from unittest.mock import AsyncMock
 import pytest
 from langchain_core.messages import HumanMessage, SystemMessage
 
-from app.agents.trip_agent import TripAgent
+from app.agents.trip_agent import (
+    PlanConstraints,
+    TripAgent,
+    find_budget_issues,
+    find_day_count_issues,
+    find_destination_issues,
+    find_rule_issues,
+    find_time_conflict_issues,
+)
 from app.schemas import GeneratedItinerary, PlanReflection
 
 
@@ -66,16 +74,22 @@ def test_low_score_draft_is_revised_once() -> None:
             feedback="行程太紧凑",
             issues=["减少第一天的活动数量"],
         )
+        revised_reflection = PlanReflection(
+            score=9,
+            feedback="修改后符合要求",
+            issues=[],
+        )
 
         agent._write_plan = AsyncMock(return_value=draft)
-        agent._reflect = AsyncMock(return_value=reflection)
+        agent._reflect = AsyncMock(side_effect=[reflection, revised_reflection])
         agent._revise = AsyncMock(return_value=revised_plan)
 
         result = await agent.plan("用户需求", "真实资料")
 
         assert result.plan is revised_plan
-        assert result.reflection is reflection
+        assert result.reflection is revised_reflection
         assert result.revised is True
+        assert agent._reflect.await_count == 2
         agent._revise.assert_awaited_once_with(
             "用户需求",
             "真实资料",
@@ -129,7 +143,7 @@ def test_relaxed_trip_rejects_four_activities_after_max_revisions() -> None:
 
         with pytest.raises(
             RuntimeError,
-            match="exceeds activity limit",
+            match="did not pass reflection checks",
         ):
             await agent.plan("长辈同行，不要太满", "真实资料")
 
@@ -138,6 +152,48 @@ def test_relaxed_trip_rejects_four_activities_after_max_revisions() -> None:
         assert "最多只能有3个" in revised_reflection.issues[-1]
 
     asyncio.run(run())
+
+
+def test_rule_checks_find_budget_day_time_and_destination_issues() -> None:
+    plan = GeneratedItinerary(
+        summary="存在规则问题的计划",
+        days=[
+            {
+                "day_number": 1,
+                "title": "澳门与上海混合行程",
+                "items": [
+                    {
+                        "time": "09:00-11:00",
+                        "type": "activity",
+                        "description": "参观上海博物馆",
+                        "cost": 80,
+                    },
+                    {
+                        "time": "10:30-12:00",
+                        "type": "food",
+                        "description": "午餐",
+                        "cost": 50,
+                    },
+                ],
+            }
+        ],
+    )
+
+    assert find_budget_issues(plan, 100)
+    assert find_day_count_issues(plan, 2)
+    assert find_time_conflict_issues(plan)
+    assert find_destination_issues(plan)
+
+    issues = find_rule_issues(
+        plan,
+        "普通行程",
+        PlanConstraints(
+            budget=100,
+            expected_day_count=2,
+        ),
+    )
+
+    assert len(issues) == 4
 
 
 def test_relaxed_trip_can_pass_on_second_revision() -> None:

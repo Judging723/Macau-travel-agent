@@ -1,5 +1,8 @@
 import asyncio
+import json
+import logging
 from functools import lru_cache
+from time import perf_counter
 from typing import Any
 
 import jieba
@@ -19,6 +22,19 @@ from app.rag.vector_store import (
 )
 
 settings = get_settings()
+logger = logging.getLogger("travel_agent.rag")
+
+
+def log_search_metrics(**metrics: Any) -> None:
+    logger.info(
+        json.dumps(
+            {
+                "event": "rag_search",
+                **metrics,
+            },
+            ensure_ascii=False,
+        )
+    )
 
 
 def tokenize(text: str) -> list[str]:
@@ -179,26 +195,55 @@ async def search_knowledge(
 async def search_hybrid_knowledge(
     query: str,
     top_k: int | None = None,
+    candidate_top_k: int | None = None,
 ) -> list[dict[str, Any]]:
     """融合向量检索和 BM25 检索结果。"""
 
     final_top_k = top_k or settings.rag_top_k
-    candidate_top_k = max(final_top_k * 4, 20)
+    retrieval_top_k = candidate_top_k or settings.rag_hybrid_candidate_k
 
+    if final_top_k <= 0 or retrieval_top_k <= 0:
+        raise ValueError("top_k and candidate_top_k must be positive")
+
+    retrieval_top_k = max(final_top_k, retrieval_top_k)
+
+    total_started = perf_counter()
+    embedding_started = perf_counter()
     query_embedding = (await embed_texts([query]))[0]
+    embedding_ms = (perf_counter() - embedding_started) * 1000
 
+    dense_started = perf_counter()
     dense_results = search_documents(
         query_embedding,
-        candidate_top_k,
+        retrieval_top_k,
     )
+    dense_ms = (perf_counter() - dense_started) * 1000
+
+    bm25_started = perf_counter()
     bm25_results = search_bm25_documents(
         query,
-        candidate_top_k,
+        retrieval_top_k,
     )
+    bm25_ms = (perf_counter() - bm25_started) * 1000
 
+    fusion_started = perf_counter()
     fused_results = RRF(
         [dense_results, bm25_results],
         top_k=final_top_k,
+    )
+    fusion_ms = (perf_counter() - fusion_started) * 1000
+
+    log_search_metrics(
+        mode="hybrid",
+        query_length=len(query),
+        dense_candidates=len(dense_results),
+        bm25_candidates=len(bm25_results),
+        returned=len(fused_results),
+        embedding_ms=round(embedding_ms, 2),
+        dense_ms=round(dense_ms, 2),
+        bm25_ms=round(bm25_ms, 2),
+        fusion_ms=round(fusion_ms, 2),
+        total_ms=round((perf_counter() - total_started) * 1000, 2),
     )
 
     return [
@@ -222,23 +267,47 @@ async def search_hybrid_knowledge(
 async def search_reranked_knowledge(
     query: str,
     top_k: int | None = None,
+    candidate_top_k: int | None = None,
 ) -> list[dict[str, Any]]:
     """对混合检索候选结果进行重排。"""
 
     final_top_k = top_k or settings.rag_top_k
-    candidate_top_k = max(final_top_k * 4, 20)
+    rerank_top_k = candidate_top_k or settings.rag_rerank_candidate_k
 
+    if final_top_k <= 0 or rerank_top_k <= 0:
+        raise ValueError("top_k and candidate_top_k must be positive")
+
+    rerank_top_k = max(final_top_k, rerank_top_k)
+
+    total_started = perf_counter()
+    hybrid_started = perf_counter()
     candidates = await search_hybrid_knowledge(
         query=query,
-        top_k=candidate_top_k,
+        top_k=rerank_top_k,
+        candidate_top_k=settings.rag_hybrid_candidate_k,
     )
+    hybrid_ms = (perf_counter() - hybrid_started) * 1000
 
-    return await asyncio.to_thread(
+    rerank_started = perf_counter()
+    results = await asyncio.to_thread(
         rerank_documents,
         query,
         candidates,
         final_top_k,
     )
+    rerank_ms = (perf_counter() - rerank_started) * 1000
+
+    log_search_metrics(
+        mode="rerank",
+        query_length=len(query),
+        hybrid_candidates=len(candidates),
+        returned=len(results),
+        hybrid_ms=round(hybrid_ms, 2),
+        rerank_ms=round(rerank_ms, 2),
+        total_ms=round((perf_counter() - total_started) * 1000, 2),
+    )
+
+    return results
 
 
 if __name__ == "__main__":
